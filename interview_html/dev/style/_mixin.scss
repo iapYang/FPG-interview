@@ -1,0 +1,17 @@
+@mixin font-face($name) {
+    @font-face{
+        font-family: $name;
+        font-weight: normal;
+        font-style: normal;
+
+        // src: url("./font/#{$name}.eot");
+        // src: url("./font/#{$name}.eot?#iefix") format("embedded-opentype"),
+        // url("./font/#{$name}.woff") format("woff"),
+        // url("./font/#{$name}.otf") format("opentype"),
+        // url("./font/#{$name}.ttf") format("truetype"),
+        // url("./font/#{$name}.svg##{$name}") format("svg");
+
+        src: url("../font/#{$name}.svg##{$name}") format("svg"),
+        url("../font/#{$name}.woff") format("woff");
+    }
+}
