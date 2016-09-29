@@ -44,7 +44,8 @@ const devPath = {
     js: path.join(devFolder, scriptFolder, '*.js'),
     img: path.join(devFolder, imageFolder, '**', '*'),
     cssDir: path.join(devFolder, styleFolder),
-    configFile: '.' + path.sep + path.join(devFolder, dataFolder, 'config.json'),
+    // configFile: '.' + path.sep + path.join(devFolder, dataFolder, 'config.json'),
+    configFile: './dev/data/config.json'
 };
 
 const destPath = {
