@@ -10,7 +10,7 @@ import $ from 'jquery';
 import TweenMax from 'gsap';
 
 // module
-import MyUtils from './module/myUtils';
+import MyUtils from './module/myUtilsModule';
 
 // vars
 let server = 'http://192.168.1.21:1337';
