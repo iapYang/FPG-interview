@@ -13,7 +13,7 @@ import TweenMax from 'gsap';
 import MyUtils from './module/myUtilsModule';
 
 // vars
-let server = 'http://192.168.1.21:1337';
+let server = 'http://localhost:1337';
 let obi_words = [];
 let current_question_index = 0;
 let current_word_index = 0;
@@ -74,7 +74,7 @@ function registerEvents() {
         $parent.removeClass('active');
     }).on('click', function() {
         let index = $door.index($(this));
-
+        let $parent = $(this).parent();
         $.ajax({
             url: server + '/getDoorsNumber',
             type: "GET",
