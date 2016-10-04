@@ -10,10 +10,11 @@ import $ from 'jquery';
 import TweenMax from 'gsap';
 
 // module
-import MyUtils from './module/myUtils';
+import MyUtilsModule from './module/myUtilsModule';
+import FrameMoudle from './module/myUtilsModule';
 
 // vars
-let server = 'http://192.168.1.21:1337';
+let server = 'http://localhost:1337';
 let obi_words = [];
 let current_question_index = 0;
 let current_word_index = 0;
@@ -74,7 +75,7 @@ function registerEvents() {
         $parent.removeClass('active');
     }).on('click', function() {
         let index = $door.index($(this));
-
+        let $parent = $(this).parent();
         $.ajax({
             url: server + '/getDoorsNumber',
             type: "GET",
@@ -106,15 +107,15 @@ function changeTalkBubbles() {
         scaleY: 0,
         onComplete: function() {
             TweenMax.killTweensOf($words);
-            $words.html(MyUtils.breakSentence(obi_words[current_word_index]));
+            $words.html(MyUtilsModule.breakSentence(obi_words[current_word_index]));
             current_word_index++;
 
             TweenMax.to($talkBubble, timeTalkBubble, {
                 scaleX: 1,
                 scaleY: 1,
                 onComplete: function() {
-                    // MyUtils.showText($words, obi_words[0], 0, 50);
-                    MyUtils.startAnimation($words);
+                    // MyUtilsModule.showText($words, obi_words[0], 0, 50);
+                    MyUtilsModule.startAnimation($words);
                 },
             });
         },

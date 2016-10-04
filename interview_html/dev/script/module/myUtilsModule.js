@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import TweenMax from 'gsap';
 
 // make words appear letter by letter
 module.showText = ($target, message, index, interval) => {
@@ -26,7 +27,7 @@ module.startAnimation = function($el) {
         autoAlpha: 1,
         color: "black"
     }, 0.1, reset($el));
-}
+};
 
 function reset($el) {
     TweenMax.to($el, 1, {
@@ -43,6 +44,24 @@ module.breakSentence = function(words) {
     }
 
     return result;
-}
+};
+
+module.narrowByProportion = function($dom) {
+    let default_proportion = 1605 / 886;
+    let width = $dom.width();
+    let height = $dom.height();
+
+    let $parent = $dom.parent();
+    let parent_width = $parent.width();()
+    let parent_height = $parent.height();
+
+    let current_proportion = parent_width / parent_height;
+
+    // if(current_proportion >= de)
+
+
+
+
+};
 
 export default module;
