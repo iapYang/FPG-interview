@@ -10,12 +10,8 @@ import $ from 'jquery';
 import TweenMax from 'gsap';
 
 // module
-<<<<<<< HEAD
-import MyUtils from './module/myUtilsModule';
-=======
 import MyUtilsModule from './module/myUtilsModule';
 import FrameMoudle from './module/myUtilsModule';
->>>>>>> master
 
 // vars
 let server = 'http://localhost:1337';
@@ -24,6 +20,7 @@ let current_question_index = 0;
 let current_word_index = 0;
 
 // selectors
+let $content_middle = $('.content-middle');
 let $talkBubble = $('.talkbubble');
 let $words = $('.words');
 let $door_item = $('.door-item');
@@ -48,6 +45,7 @@ function track(action, trackingString) {
 function init() {
     loadPicture();
     registerEvents();
+    MyUtilsModule.narrowByProportion($content_middle);
 
     fetch('./data/config.json')
         .then(function(response) {
@@ -65,6 +63,10 @@ function loadPicture() {
 }
 
 function registerEvents() {
+    $(window).on('resize', function() {
+        MyUtilsModule.narrowByProportion($content_middle);
+    });
+
     $door.on('mouseenter', function() {
         if (!Platform.isDesktop) return;
         if ($door_item.hasClass('selected')) return;
