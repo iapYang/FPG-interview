@@ -10,7 +10,12 @@ import $ from 'jquery';
 import TweenMax from 'gsap';
 
 // module
+<<<<<<< HEAD
 import MyUtils from './module/myUtilsModule';
+=======
+import MyUtilsModule from './module/myUtilsModule';
+import FrameMoudle from './module/myUtilsModule';
+>>>>>>> master
 
 // vars
 let server = 'http://localhost:1337';
@@ -106,15 +111,15 @@ function changeTalkBubbles() {
         scaleY: 0,
         onComplete: function() {
             TweenMax.killTweensOf($words);
-            $words.html(MyUtils.breakSentence(obi_words[current_word_index]));
+            $words.html(MyUtilsModule.breakSentence(obi_words[current_word_index]));
             current_word_index++;
 
             TweenMax.to($talkBubble, timeTalkBubble, {
                 scaleX: 1,
                 scaleY: 1,
                 onComplete: function() {
-                    // MyUtils.showText($words, obi_words[0], 0, 50);
-                    MyUtils.startAnimation($words);
+                    // MyUtilsModule.showText($words, obi_words[0], 0, 50);
+                    MyUtilsModule.startAnimation($words);
                 },
             });
         },
