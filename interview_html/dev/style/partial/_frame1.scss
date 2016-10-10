@@ -74,14 +74,19 @@
             .door-item {
                 position: relative;
                 display: inline-block;
-                width: 33.3%;
+                width: 30%;
                 max-width: 250px;
+
+                &:nth-child(2) {
+                    margin: 0 5%;
+                }
 
                 .arrow-down {
                     position: absolute;
                     left: 42.5%;
-                    top: -20%;
-                    width: 15%;
+                    // top: -20%;
+                    bottom: 120%;
+                    width: 20%;
                     opacity: 0;
                     @include transition(opacity 0.3s linear);
                 }
