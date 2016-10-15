@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no" />
-    <meta name="format-detection" content="telephone=no" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-    <title>FPG Interview</title>
+        <title>FPG Interview</title>
 
-    <!-- inject:css -->
-    <link rel="stylesheet" href="style/style.css">
-    <!-- endinject -->
-</head>
+        <!-- inject:css -->
+        <link rel="stylesheet" href="style/style.css">
+        <!-- endinject -->
+    </head>
 
-<body>
-    <!-- content start -->
-    <div class="content-middle">
-        {% include "./partial/frame1.swig" %}
-    </div>
+    <body>
+        <!-- content start -->
+        {% include "./partial/openFrame.swig" %}
 
-    <!-- content end -->
+        <div class="content-middle frame-list">
+            {# {% include "./partial/frame1.swig" %} #}
+        </div>
 
-    {% include "./partial/tip.swig" %}
+        <!-- content end -->
 
-    <script src="vendor/polyfill.min.js"></script>
-    <!-- inject:js -->
-    <script src="script/app.js"></script>
-    <!-- endinject -->
-</body>
+        {% include "./partial/tip.swig" %}
+
+        <script src="vendor/polyfill.min.js"></script>
+        <!-- inject:js -->
+        <script src="script/app.js"></script>
+        <!-- endinject -->
+    </body>
 
 </html>

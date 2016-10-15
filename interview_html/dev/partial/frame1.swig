@@ -4,6 +4,9 @@
             <div class="words"></div>
         </div>
     </div>
+    <div class="banner">
+
+    </div>
     <div class="door-wrapper">
         <div class="door-list">
             <div class="door-item">

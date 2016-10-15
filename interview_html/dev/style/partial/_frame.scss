@@ -1,12 +1,15 @@
-.content-middle {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.frame-list {
+    position: relative;
     background-color: #f1f1f1;
 
     .frame {
         position: relative;
         width: 100%;
         height: 100%;
+
+        .banner {
+            position: relative;
+            min-height: 20%;
+        }
     }
 }

@@ -11,7 +11,11 @@ import TweenMax from 'gsap';
 
 // module
 import MyUtilsModule from './module/myUtilsModule';
-import FrameMoudle from './module/myUtilsModule';
+import FrameMoudle from './module/frameModule';
+import OpenFrameMoudle from './module/openFrameModule';
+
+// window
+window.flag_scroll_down = false;
 
 // vars
 let server = 'http://localhost:1337';
@@ -26,6 +30,8 @@ let $words = $('.words');
 let $door_item = $('.door-item');
 let $door = $('.door');
 let $arrow_down = $('.arrow-down');
+let $scroll_down_btn = $('.scroll-down-button');
+let $frame_list = $('.frame-list');
 
 //time
 let timeTalkBubble = 0.3;
@@ -44,16 +50,18 @@ function track(action, trackingString) {
 
 function init() {
     loadPicture();
+    OpenFrameMoudle.fitScreen();
     registerEvents();
-    MyUtilsModule.narrowByProportion($content_middle);
-
-    fetch('./data/config.json')
-        .then(function(response) {
-            return response.json();
-        }).then(function(content) {
-            obi_words = content.first_question;
-            changeTalkBubbles();
-        });
+    OpenFrameMoudle.startAni();
+    // MyUtilsModule.narrowByProportion($content_middle);
+    //
+    // fetch('./data/config.json')
+    //     .then(function(response) {
+    //         return response.json();
+    //     }).then(function(content) {
+    //         obi_words = content.first_question;
+    //         changeTalkBubbles();
+    //     });
 }
 
 function loadPicture() {
@@ -64,7 +72,24 @@ function loadPicture() {
 
 function registerEvents() {
     $(window).on('resize', function() {
-        MyUtilsModule.narrowByProportion($content_middle);
+        // MyUtilsModule.narrowByProportion($content_middle);
+        OpenFrameMoudle.fitScreen();
+    });
+
+    $scroll_down_btn.on('click', function() {
+        console.log('xxxx');
+        window.flag_scroll_down = true;
+        if (!$frame_list.height()) {
+            FrameMoudle.fitScreen();
+        }
+
+        console.log($frame_list.offset().top,$('html').offset().top);
+
+
+
+        TweenMax.to('html,body', 3, {
+            'scrollTop': 100
+        });
     });
 
     $door.on('mouseenter', function() {
