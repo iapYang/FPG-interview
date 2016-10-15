@@ -30,6 +30,7 @@ let $words = $('.words');
 let $door_item = $('.door-item');
 let $door = $('.door');
 let $arrow_down = $('.arrow-down');
+let $html_body = $('html.body');
 let $scroll_down_btn = $('.scroll-down-button');
 let $frame_list = $('.frame-list');
 
@@ -74,6 +75,7 @@ function registerEvents() {
     $(window).on('resize', function() {
         // MyUtilsModule.narrowByProportion($content_middle);
         OpenFrameMoudle.fitScreen();
+        console.log($frame_list.scrollTop(), $('html').scrollTop());
     });
 
     $scroll_down_btn.on('click', function() {
@@ -83,13 +85,11 @@ function registerEvents() {
             FrameMoudle.fitScreen();
         }
 
-        console.log($frame_list.offset().top,$('html').offset().top);
+        console.log($frame_list.offset().top, $('html').offset().top);
 
-
-
-        TweenMax.to('html,body', 3, {
-            'scrollTop': 100
-        });
+        TweenMax.to($html_body, 1, {
+            scrollTop: $frame_list.offset().top
+        })
     });
 
     $door.on('mouseenter', function() {
