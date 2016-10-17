@@ -1,15 +1,160 @@
+$animation_time: 0.3s;
+$translate_x: 20px;
+
 .frame-list {
     position: relative;
-    background-color: #f1f1f1;
+    background-color: #fff;
 
-    .frame {
+    .frame-intro-list {
         position: relative;
         width: 100%;
         height: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
 
-        .banner {
+        .frame-intro-item {
             position: relative;
-            min-height: 20%;
+            width: 95%;
+            margin: 0 auto;
+            height: 33.33333%;
+            cursor: pointer;
+            @include transition(all ease $animation_time);
+
+            .frame-intro-item-wrapper {
+                position: absolute;
+                width: 100%;
+                height: 90%;
+                top: 5%;
+                overflow: hidden;
+
+                .frame-intro-item-left {
+                    position: absolute;
+                    width: 300px;
+                    left: 0;
+                    top: 0;
+                    overflow: hidden;
+
+                    img {
+                        position: relative;
+                        display: block;
+                        z-index: 1;
+                        @include transition(all ease $animation_time);
+                    }
+
+                    .mask {
+                        display: block;
+                        position: absolute;
+                        height: 100%;
+                        background-color: #fff;
+                        top: 0;
+                        z-index: 2;
+                        @include transition(all ease $animation_time);
+                    }
+
+                    .left-mask {
+                        width: $translate_x * 2;
+                        height: 100%;
+                        left: -$translate_x;
+                    }
+
+                    .right-mask {
+                        width: $translate_x;
+                        right: 0;
+                    }
+                }
+
+                .frame-intro-item-right {
+                    position: relative;
+                    margin-left: 300px;
+                    height: 100%;
+                    // background-color: #000;
+                    @include transition(all ease $animation_time);
+
+                    .info-contianer {
+                        .category {
+                            span {
+                                font-size: 1.5vw;
+                                font-family: 'Lato', sans-serif;
+                                color: #fab23a;
+                                text-transform: uppercase;
+                            }
+                        }
+
+                        .title {
+                            span {
+                                font-size: 3vw;
+                                font-family: 'Lato', sans-serif;
+                            }
+                        }
+
+                        .sub-title {
+                            span {
+                                font-size: 2vw;
+                                font-family: 'Lato', sans-serif;
+                            }
+                        }
+                    }
+                }
+
+                .next-page {
+                    position: absolute;
+                    width: 60px;
+                    height: 100%;
+                    right: $translate_x;
+                    top: 0;
+
+                    img {
+                        display: inline-block;
+                        width: 100%;
+                        vertical-align: bottom;
+                    }
+
+                    &:after {
+                        content: "";
+                        display: inline-block;
+                        width: 0;
+                        height: 100%;
+                        vertical-align: bottom;
+                    }
+                }
+            }
+
+            &:nth-child(2) {
+                border-top: 1px solid #e9edef;
+                border-bottom: 1px solid #e9edef;
+            }
         }
+    }
+}
+
+.desktop {
+    .frame-intro-item:hover {
+        background-color: #f1f1f1;
+
+        .frame-intro-item-wrapper {
+            .frame-intro-item-left {
+                .mask {
+                    background-color: #f1f1f1;
+                    @include transform(translateX($translate_x));
+                }
+            }
+
+            .frame-intro-item-right {
+                @include transform(translateX($translate_x));
+            }
+
+            .next-page {
+                @include animation(next_swing 0.4s ease infinite alternate);
+            }
+        }
+    }
+}
+@keyframes next_swing {
+    0% {
+        @include transform(translateX(0px));
+    }
+
+    100% {
+        @include transform(translateX(20px));
     }
 }
