@@ -74,7 +74,9 @@ function registerEvents() {
     $(window).on('resize', function() {
         // MyUtilsModule.narrowByProportion($content_middle);
         OpenFrameMoudle.fitScreen();
-        console.log($frame_list.scrollTop(), $('html').scrollTop());
+        if($frame_list.hasClass('intro-added')) {
+            FrameMoudle.fitScreen();
+        }
     });
 
     $scroll_down_btn.on('click', function() {
@@ -89,7 +91,7 @@ function registerEvents() {
             onComplete: function() {
                 if ($frame_list.hasClass('intro-added')) return;
                 $frame_list.addClass('intro-added');
-                FrameMoudle.insertIntro([{
+                FrameMoudle.buildPage([{
                     category: 'Game',
                     title: 'xxx',
                     sub_title: 'yyyyyy',
