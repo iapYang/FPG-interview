@@ -76,7 +76,7 @@ $circle_width: 200px;
                         .category {
                             span {
                                 font-size: 1.5vw;
-                                font-family: 'Lato', sans-serif;
+                                font-family: 'Roboto Condensed', sans-serif;
                                 font-weight: 700;
                                 color: #fab23a;
                                 text-transform: uppercase;
@@ -88,15 +88,28 @@ $circle_width: 200px;
 
                             span {
                                 font-size: 3vw;
-                                font-family: 'Anton', sans-serif;
+                                letter-spacing: 2px;
+                                font-family: 'Bangers', cursive;
                             }
                         }
 
                         .sub-title {
+                            width: 90%;
                             span {
                                 font-size: 2vw;
-                                font-family: 'Lato', sans-serif;
+                                font-family: 'Eczar', serif;
+                                letter-spacing: 1px;
+                                line-height: 1.2;
                                 color: #777;
+                            }
+                        }
+
+                        .degree {
+                            margin-top: 20px;
+                            svg {
+                                position: relative;
+                                width: 25px;
+                                height: 25px;
                             }
                         }
                     }

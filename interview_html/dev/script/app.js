@@ -15,53 +15,41 @@ import FrameMoudle from './module/frameModule';
 import OpenFrameMoudle from './module/openFrameModule';
 
 // window
-window.flag_scroll_down = false;
+let brief_data = [{
+    category: 'Game',
+    title: 'Three Doors',
+    sub_title: 'This one is a simple game which requires luck and intellgency. You\'ll have two tries to catch the right choice, I\'ll give you hints, Can you get it done?',
+    star: 4,
+}, {
+    category: 'Question',
+    title: 'xxx',
+    sub_title: 'yyyyyy',
+    star: 4,
+}, {
+    category: 'Question',
+    title: 'xxx',
+    sub_title: 'yyyyyy',
+    star: 4,
+}];
 
 // vars
 let server = 'http://localhost:1337';
-let obi_words = [];
-let current_question_index = 0;
-let current_word_index = 0;
 
 // selectors
-let $content_middle = $('.content-middle');
-let $talkBubble = $('.talkbubble');
-let $words = $('.words');
-let $door_item = $('.door-item');
-let $door = $('.door');
-let $arrow_down = $('.arrow-down');
 let $scroll_down_btn = $('.scroll-down-button');
 let $frame_list = $('.frame-list');
 
 //time
-let timeTalkBubble = 0.3;
+
 
 //flag
-let flagHaveChoice = false;
 
-
-function track(action, trackingString) {
-    console.log(`Action:${action}`, `Track:${trackingString}`);
-
-    if (typeof ga !== 'undefined') ga('send', 'event', 'xxx', action, trackingString);
-
-    return false;
-}
 
 function init() {
     loadPicture();
     OpenFrameMoudle.fitScreen();
     registerEvents();
     OpenFrameMoudle.startAni();
-    // MyUtilsModule.narrowByProportion($content_middle);
-    //
-    // fetch('./data/config.json')
-    //     .then(function(response) {
-    //         return response.json();
-    //     }).then(function(content) {
-    //         obi_words = content.first_question;
-    //         changeTalkBubbles();
-    //     });
 }
 
 function loadPicture() {
@@ -74,14 +62,12 @@ function registerEvents() {
     $(window).on('resize', function() {
         // MyUtilsModule.narrowByProportion($content_middle);
         OpenFrameMoudle.fitScreen();
-        if($frame_list.hasClass('intro-added')) {
+        if ($frame_list.hasClass('intro-added')) {
             FrameMoudle.fitScreen();
         }
     });
 
     $scroll_down_btn.on('click', function() {
-        console.log('xxxx');
-        window.flag_scroll_down = true;
         if (!$frame_list.height()) {
             FrameMoudle.fitScreen();
         }
@@ -91,81 +77,9 @@ function registerEvents() {
             onComplete: function() {
                 if ($frame_list.hasClass('intro-added')) return;
                 $frame_list.addClass('intro-added');
-                FrameMoudle.buildPage([{
-                    category: 'Game',
-                    title: 'xxx',
-                    sub_title: 'yyyyyy',
-                }, {
-                    category: 'Game',
-                    title: 'xxx',
-                    sub_title: 'yyyyyy',
-                }, {
-                    category: 'Game',
-                    title: 'xxx',
-                    sub_title: 'yyyyyy',
-                }]);
+                FrameMoudle.buildPage(brief_data);
             }
         })
-    });
-
-    $door.on('mouseenter', function() {
-        if (!Platform.isDesktop) return;
-        if ($door_item.hasClass('selected')) return;
-
-        let $parent = $(this).parent();
-        $parent.addClass('active');
-    }).on('mouseleave', function() {
-        if (!Platform.isDesktop) return;
-        if ($door_item.hasClass('selected')) return;
-
-        let $parent = $(this).parent();
-        $parent.removeClass('active');
-    }).on('click', function() {
-        let index = $door.index($(this));
-        let $parent = $(this).parent();
-        $.ajax({
-            url: server + '/getDoorsNumber',
-            type: "GET",
-            data: {
-                'choice': index
-            },
-            success: function(result) {
-                if ($door_item.hasClass('selected')) return;
-                $parent.addClass('selected');
-                console.log('Wrong Answer:' + result);
-                obi_words[current_word_index] = obi_words[current_word_index].replace(/placeHere/gm, numberToString(result));
-                $arrow_down.eq(index).addClass('selected');
-                changeTalkBubbles();
-
-
-
-            },
-        });
-    });
-}
-
-function changeTalkBubbles() {
-    TweenMax.set($words, {
-        autoAlpha: 0
-    });
-
-    TweenMax.to($talkBubble, timeTalkBubble, {
-        scaleX: 0,
-        scaleY: 0,
-        onComplete: function() {
-            TweenMax.killTweensOf($words);
-            $words.html(MyUtilsModule.breakSentence(obi_words[current_word_index]));
-            current_word_index++;
-
-            TweenMax.to($talkBubble, timeTalkBubble, {
-                scaleX: 1,
-                scaleY: 1,
-                onComplete: function() {
-                    // MyUtilsModule.showText($words, obi_words[0], 0, 50);
-                    MyUtilsModule.startAnimation($words);
-                },
-            });
-        },
     });
 }
 

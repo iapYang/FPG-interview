@@ -19,6 +19,35 @@ let $loading = $('.loading');
 let $frame_intro_item;
 let $frame_game_item;
 
+let detail = [{
+    questions: ['xxxxxxx'],
+    options: [{
+        image: './image/door_1204922_easyicon.net.svg'
+    }, {
+        image: './image/door_1204922_easyicon.net.svg'
+    }, {
+        image: './image/door_1204922_easyicon.net.svg'
+    }],
+}, {
+    questions: ['xxxxxxx'],
+    options: [{
+        text: 'zzzzzzzzzz',
+    }, {
+        text: 'zzzzzzzzzz',
+    }, {
+        text: 'zzzzzzzzzz',
+    }],
+}, {
+    questions: ['xxxxxxx'],
+    options: [{
+        text: 'zzzzzzzzzz',
+    }, {
+        text: 'zzzzzzzzzz',
+    }, {
+        text: 'zzzzzzzzzz',
+    }],
+}];
+
 module.fitScreen = function() {
     $dom.css({
         'height': $window.height()
@@ -44,7 +73,8 @@ function fillIntro(content, data) {
             locals: {
                 category: item.category,
                 title: item.title,
-                sub_title: item.sub_title
+                sub_title: item.sub_title,
+                star: item.star
             },
         });
         $frame_intro_list.append($(render));

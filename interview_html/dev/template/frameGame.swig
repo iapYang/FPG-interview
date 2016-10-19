@@ -6,17 +6,18 @@
 <div class="frame-game-wrapper">
     <div class="frame-game-left frame-game-part">
         <ul class="options">
+            {% set x = ['A','B','C'] %}
             <li>
                 <span>A:&nbsp;&nbsp;</span>
-                <span>xxxx</span>
+                <span>{{x[0]}}</span>
             </li>
             <li>
                 <span>B:&nbsp;&nbsp;</span>
-                <span>xxxx</span>
+                <span>{{x[1]}}</span>
             </li>
             <li>
                 <span>C:&nbsp;&nbsp;</span>
-                <span>xxxx</span>
+                <span>{{x[2]}}</span>
             </li>
         </ul>
     </div>
