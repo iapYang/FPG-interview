@@ -79,7 +79,7 @@ function registerEvents() {
                 $frame_list.addClass('intro-added');
                 FrameMoudle.buildPage(brief_data);
             }
-        })
+        });
     });
 }
 
@@ -87,13 +87,13 @@ function numberToString(index) {
     switch (index) {
         case 0:
             return 'first';
-            break;
+            // break;
         case 1:
             return 'second';
-            break;
+            // break;
         case 2:
             return 'third';
-            break;
+            // break;
         default:
             return 'zero';
     }

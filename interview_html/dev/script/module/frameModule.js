@@ -56,7 +56,7 @@ module.fitScreen = function() {
 
 module.buildPage = function(data) {
     insertIntro(data);
-}
+};
 
 function insertIntro(data) {
     fetch('./template/frameIntro.swig')
@@ -65,7 +65,7 @@ function insertIntro(data) {
         }).then(function(content) {
             fillIntro(content, data);
         });
-};
+}
 
 function fillIntro(content, data) {
     data.forEach(function(item, i) {
@@ -114,7 +114,7 @@ function registerEvents() {
                         });
                     });
                 }
-            })
+            });
         });
     });
 
