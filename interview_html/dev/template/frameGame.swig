@@ -6,24 +6,25 @@
 <div class="frame-game-wrapper">
     <div class="frame-game-left frame-game-part">
         <ul class="options">
-            {% set x = ['A','B','C'] %}
-            <li>
-                <span>A:&nbsp;&nbsp;</span>
-                <span>{{x[0]}}</span>
-            </li>
-            <li>
-                <span>B:&nbsp;&nbsp;</span>
-                <span>{{x[1]}}</span>
-            </li>
-            <li>
-                <span>C:&nbsp;&nbsp;</span>
-                <span>{{x[2]}}</span>
-            </li>
+            {% set number = ['A', 'B', 'C'] %}
+            {% for i, item in options %}
+                <li>
+                    <span>{{number[i]}}:&nbsp;&nbsp;</span>
+                    {% if item.option %}
+                        <span>{{item.option}}</span>
+                    {% endif %}
+                    {% if item.image %}
+                        <img class="option-img" src="{{item.image}}" alt=""/>
+                    {% endif %}
+                </li>
+            {% endfor %}
         </ul>
     </div>
     <div class="frame-game-right frame-game-part">
         <div class="frame-game-question">
-            <span>xxx xxxx xxxx xxxx xxxxx xxxxxx</span>
+            {% for i, item in questions %}
+                <span>{{item}}</span>
+            {% endfor %}
         </div>
         <div class="divide-line"></div>
     </div>

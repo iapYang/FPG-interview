@@ -230,16 +230,24 @@ $circle_width: 200px;
                         vertical-align: middle;
 
                         li {
-                            margin-top: 20px;
-                            margin-bottom: 20px;
+                            margin: 30px 0;
                             @include transform(translateY(20px));
                             opacity: 0;
 
                             span {
                                 color: #582c2b;
                                 font-size: 4vw;
-                                font-family: 'Merriweather Sans', sans-serif;
-                                font-family: 'Amita', cursive;
+                                font-family: 'Changa One', cursive;
+                                vertical-align: middle;
+                                text-transform: uppercase;
+                                padding-right: 20px;
+                            }
+
+                            .option-img {
+                                position: relative;
+                                display: inline-block;
+                                width: 11vw;
+                                vertical-align: middle;
                             }
                         }
                     }

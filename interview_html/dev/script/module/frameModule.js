@@ -20,13 +20,13 @@ let $frame_intro_item;
 let $frame_game_item;
 
 let detail = [{
-    questions: ['xxxxxxx'],
+    questions: ['xxxxxxx, dhfkshdgjsj, gkjehridghi'],
     options: [{
-        image: './image/door_1204922_easyicon.net.svg'
+        image: './image/door_1204922_easyicon.net.svg',
     }, {
-        image: './image/door_1204922_easyicon.net.svg'
+        image: './image/door_1204922_easyicon.net.svg',
     }, {
-        image: './image/door_1204922_easyicon.net.svg'
+        image: './image/door_1204922_easyicon.net.svg',
     }],
 }, {
     questions: ['xxxxxxx'],
@@ -107,7 +107,7 @@ function registerEvents() {
                     FrameGameModule.openAnimation(frame_index);
                 } else {
                     loadingAppear(function() {
-                        FrameGameModule.bulidGame(frame_index, function() {
+                        FrameGameModule.bulidGame(frame_index, detail[frame_index], function() {
                             loadingDisappear(function() {
                                 FrameGameModule.openAnimation(frame_index);
                             });

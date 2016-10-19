@@ -5,8 +5,8 @@ import TweenMax from 'gsap';
 let time_animation = 2;
 let time_fade = 0.3;
 
-module.bulidGame = function(index,func) {
-    insertGameFrame(index, func);
+module.bulidGame = function(index, data, func) {
+    insertGameFrame(index, data, func);
 };
 
 module.openAnimation = function(index) {
@@ -86,19 +86,21 @@ module.reset = function(index) {
     });
 }
 
-function insertGameFrame(index, func) {
+function insertGameFrame(index, data, func) {
     fetch('./template/frameGame.swig')
         .then(function(response) {
             return response.text();
         }).then(function(content) {
-            fillGameFrame(content, index, func);
+            fillGameFrame(content, index, data, func);
         });
 }
 
-function fillGameFrame(content, index, func) {
+function fillGameFrame(content, index, data, func) {
     let render = swig.render(content, {
         locals: {
-            index: index + 1
+            index: index + 1,
+            options: data.options,
+            questions: data.questions
         },
     });
     $('.frame-game-item').eq(index).addClass('game-loaded').append(render);

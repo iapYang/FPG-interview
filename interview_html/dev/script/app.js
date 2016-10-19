@@ -24,7 +24,7 @@ let brief_data = [{
     category: 'Question',
     title: 'xxx',
     sub_title: 'yyyyyy',
-    star: 4,
+    star: 5,
 }, {
     category: 'Question',
     title: 'xxx',
