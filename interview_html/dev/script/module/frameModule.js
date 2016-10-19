@@ -5,6 +5,8 @@ import fetchJsonp from 'fetch-jsonp';
 import 'fetch-ie8';
 import 'es6-promise';
 
+import FrameGameModule from './frameGameModule.js';
+
 let time_frame_ani = 0.5;
 let time_frame_delay = 0.2;
 let frame_index = 0;
@@ -13,6 +15,7 @@ let $dom = $('.frame-list');
 let $window = $(window);
 let $frame_intro_list = $('.frame-intro-list');
 let $frame_game_list = $('.frame-game-list');
+let $loading = $('.loading');
 let $frame_intro_item;
 let $frame_game_item;
 
@@ -47,7 +50,11 @@ function fillIntro(content, data) {
         $frame_intro_list.append($(render));
         $frame_game_list.append($('<div></div>').addClass('frame-game-item'));
     });
-    registerEvents();
+
+    loadingDisappear(function() {
+        registerEvents();
+        frameIntroItemSlideRight();
+    });
 }
 
 function registerEvents() {
@@ -57,67 +64,107 @@ function registerEvents() {
     $frame_intro_item.on('click', function() {
         frame_index = $frame_intro_item.index(this);
 
-        for (let i = 0; i < $frame_intro_item.length; i++) {
+        frameIntroItemSlideLeft(function(i) {
+            if (i !== $frame_intro_item.length - 1) return;
 
-            TweenMax.to($frame_intro_item.eq(i), time_frame_ani, {
-                x: '-150%',
-                delay: i * time_frame_delay,
-                onComplete: function() {
-                    if (i !== $frame_intro_item.length - 1) return;
+            frameGameListSlideLeft(function() {
+                TweenMax.set($frame_game_item.eq(frame_index), {
+                    autoAlpha: 1
+                });
 
-                    TweenMax.to($frame_game_list, time_frame_ani, {
-                        autoAlpha: 1,
-                        x: '-100%',
-                        onComplete: function() {
-                            if (i !== $frame_intro_item.length - 1) return;
-                            TweenMax.set($frame_game_item.eq(frame_index), {
-                                autoAlpha: 1
+                // if this game has loaded, just bring open animation
+                if ($frame_game_item.eq(frame_index).hasClass('game-loaded')) {
+                    FrameGameModule.openAnimation(frame_index);
+                } else {
+                    loadingAppear(function() {
+                        FrameGameModule.bulidGame(frame_index, function() {
+                            loadingDisappear(function() {
+                                FrameGameModule.openAnimation(frame_index);
                             });
-                            if ($frame_game_item.eq(frame_index).hasClass('game-added')) return;
-                            insertGameFrame();
-                        },
+                        });
                     });
-                },
-            });
-        }
+                }
+            })
+        });
     });
 
     $frame_game_item.on('click', '.page-back', function() {
-        TweenMax.to($frame_game_list, time_frame_ani, {
-            autoAlpha: 0,
-            x: '0%',
+        frameGameListSlideRight(function() {
+            TweenMax.set($frame_game_item, {
+                autoAlpha: 0,
+            });
+
+            FrameGameModule.reset((frame_index));
+
+            frameIntroItemSlideRight();
+        });
+    });
+}
+
+function frameIntroItemSlideLeft(func) {
+    if (typeof(func) !== 'function') func = function() {};
+    for (let i = 0; i < $frame_intro_item.length; i++) {
+
+        TweenMax.to($frame_intro_item.eq(i), time_frame_ani, {
+            x: '-150%',
+            delay: i * time_frame_delay,
             onComplete: function() {
-                TweenMax.set($frame_game_item.eq(frame_index), {
-                    autoAlpha: 0,
-                });
-                
-                for (let i = 0; i < $frame_intro_item.length; i++) {
-                    TweenMax.to($frame_intro_item.eq(i), time_frame_ani, {
-                        x: '0%',
-                        delay: i * time_frame_delay,
-                    });
-                }
-            }
+                $frame_intro_item.eq(i).removeClass('ani');
+                func(i);
+            },
         });
+    }
+}
+
+function frameIntroItemSlideRight(func) {
+    if (typeof(func) !== 'function') func = function() {};
+    for (let i = 0; i < $frame_intro_item.length; i++) {
+        TweenMax.to($frame_intro_item.eq(i), time_frame_ani, {
+            x: '0%',
+            delay: i * time_frame_delay,
+            onComplete: function() {
+                $frame_intro_item.eq(i).addClass('ani');
+            },
+        });
+    }
+}
+
+function frameGameListSlideLeft(func) {
+    if (typeof(func) !== 'function') func = function() {};
+
+    TweenMax.to($frame_game_list, time_frame_ani, {
+        autoAlpha: 1,
+        x: '-100%',
+        onComplete: func(),
     });
 }
 
-function insertGameFrame() {
-    fetch('./template/frameGame.swig')
-        .then(function(response) {
-            return response.text();
-        }).then(function(content) {
-            fillGameFrame(content);
-        });
+function frameGameListSlideRight(func) {
+    if (typeof(func) !== 'function') func = function() {};
+
+    TweenMax.to($frame_game_list, time_frame_ani, {
+        autoAlpha: 0,
+        x: '0%',
+        onComplete: func(),
+    });
 }
 
-function fillGameFrame(content) {
-    let render = swig.render(content, {
-        locals: {
-
-        },
+function loadingDisappear(func) {
+    console.log('disappear');
+    if (typeof(func) !== 'function') func = function() {};
+    TweenMax.to($loading, time_frame_ani, {
+        autoAlpha: 0,
+        onComplete: func(),
     });
-    $frame_game_item.eq(frame_index).addClass('game-added').append(render);
+}
+
+function loadingAppear(func) {
+    console.log('appear');
+    if (typeof(func) !== 'function') func = function() {};
+    TweenMax.to($loading, time_frame_ani, {
+        autoAlpha: 1,
+        onComplete: func(),
+    });
 }
 
 export default module;
