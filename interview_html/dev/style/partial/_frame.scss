@@ -95,6 +95,7 @@ $circle_width: 200px;
 
                         .sub-title {
                             width: 90%;
+
                             span {
                                 font-size: 2vw;
                                 font-family: 'Eczar', serif;
@@ -106,6 +107,7 @@ $circle_width: 200px;
 
                         .degree {
                             margin-top: 20px;
+
                             svg {
                                 position: relative;
                                 width: 25px;
@@ -256,16 +258,26 @@ $circle_width: 200px;
                 .frame-game-right {
                     text-align: center;
 
+                    &:after {
+                        content: "";
+                        position: relative;
+                        vertical-align: middle;
+                        width: 0;
+                        height: 100%;
+                        display: inline-block;
+                    }
+
                     .frame-game-question {
                         position: relative;
                         display: inline-block;
                         width: 80%;
                         text-align: left;
+                        vertical-align: middle;
 
                         span {
                             font-size: 4vw;
-                            font-family: 'Merriweather Sans', sans-serif;
                             font-family: 'Amita', cursive;
+                            line-height: 1.5;
                         }
                     }
 
