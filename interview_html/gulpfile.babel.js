@@ -136,7 +136,7 @@ gulp.task('swig', () => {
 
 gulp.task('sass', () => {
     return gulp.src(devPath.sass)
-    .pipe(cache('sass'))
+    // .pipe(cache('sass'))
     .pipe(compass({
         sassDir: devPath.cssDir,
         cssDir: destPath.cssDir

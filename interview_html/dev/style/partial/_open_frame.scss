@@ -1,0 +1,80 @@
+.open-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+
+    .middle-part {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 50%;
+        @include transform(translateY(-50%));
+        text-align: center;
+
+        .holder {
+            display: inline-block;
+            width: 80%;
+            margin-top: -48px;
+            opacity: 1;
+            cursor: pointer;
+
+            path {
+                opacity: 0;
+                stroke-dasharray: 1000;
+                stroke-dashoffset: 1000;
+                @include transition(all ease 2s);
+
+                &.active {
+                    stroke-dashoffset: 0;
+                }
+            }
+        }
+
+        .intro-stuff {
+            padding-top: 30px;
+            color: #f1f1f1;
+            @include transform(translateY(15px));
+            opacity: 0;
+            cursor: default;
+
+            span {
+                text-transform: capitalize;
+            }
+        }
+
+        .intro {
+            span {
+                font-size: 3.5vw;
+            }
+        }
+
+        .sub-intro {
+            span {
+                font-size: 3vw;
+            }
+        }
+    }
+
+    .scroll-down {
+        position: absolute;
+        width: 100%;
+        bottom: 10px;
+        left: 0;
+        opacity: 0;
+
+        .scroll-down-button {
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}

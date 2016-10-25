@@ -47,21 +47,28 @@ module.breakSentence = function(words) {
 };
 
 module.narrowByProportion = function($dom) {
-    let default_proportion = 1605 / 886;
-    let width = $dom.width();
-    let height = $dom.height();
+    let default_proportion = 1885 / 886;
+    // let width = $dom.width();
+    // let height = $dom.height();
 
     let $parent = $dom.parent();
-    let parent_width = $parent.width();()
+    let parent_width = $parent.width();
     let parent_height = $parent.height();
 
     let current_proportion = parent_width / parent_height;
 
-    // if(current_proportion >= de)
+    if(current_proportion >= default_proportion) {
+        $dom.width(parent_height * default_proportion);
+        $dom.height(parent_height);
+    }else {
+        $dom.width(parent_width);
+        $dom.height(parent_width / default_proportion);
+    }
 
-
-
-
+    $dom.css({
+        'top': (parent_height - $dom.height()) / 2,
+        'left': (parent_width - $dom.width()) / 2,
+    });
 };
 
 export default module;
