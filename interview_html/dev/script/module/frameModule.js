@@ -20,7 +20,7 @@ let $frame_intro_item;
 let $frame_game_item;
 
 let detail = [{
-    questions: ['xxxxxxx, dhfkshdgjsj, gkjehridghi'],
+    questions: ['There\'re three doors on the left, one of them is the correct door. Please make your choice.'],
     options: [{
         image: './image/door_1204922_easyicon.net.svg',
     }, {
@@ -165,6 +165,7 @@ function frameGameListSlideLeft(func) {
     TweenMax.to($frame_game_list, time_frame_ani, {
         autoAlpha: 1,
         x: '-100%',
+        ease:'easeOutSine',
         onComplete: func(),
     });
 }
@@ -175,6 +176,7 @@ function frameGameListSlideRight(func) {
     TweenMax.to($frame_game_list, time_frame_ani, {
         autoAlpha: 0,
         x: '0%',
+        ease:'easeOutSine',
         onComplete: func(),
     });
 }

@@ -273,6 +273,8 @@ $circle_width: 200px;
                         width: 80%;
                         text-align: left;
                         vertical-align: middle;
+                        @include transform(scaleY(0));
+                        opacity: 0;
 
                         span {
                             font-size: 4vw;

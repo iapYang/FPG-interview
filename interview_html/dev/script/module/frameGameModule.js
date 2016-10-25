@@ -36,8 +36,15 @@ module.openAnimation = function(index) {
                     TweenMax.to($dom.find('.page-back'), time_fade, {
                         autoAlpha: 1
                     });
+
                     TweenMax.to($dom.find('.divide-line'), time_fade, {
-                        scaleY: 1
+                        scaleY: 1,
+                        onComplete: function() {
+                            TweenMax.to($dom.find('.frame-game-question'),time_fade,{
+                                scaleY:1,
+                                autoAlpha:1,
+                            });
+                        }
                     });
 
                     let $options_li = $dom.find('.options').find('li');
@@ -83,6 +90,10 @@ module.reset = function(index) {
     TweenMax.set($dom.find('.options').find('li'), {
         y: 20,
         autoAlpha: 0,
+    });
+    TweenMax.set($dom.find('.frame-game-question'),{
+        scaleY:0,
+        autoAlpha:0,
     });
 }
 
