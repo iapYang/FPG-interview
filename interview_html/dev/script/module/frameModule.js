@@ -74,18 +74,24 @@ function registerEvents() {
 
                 // if this game has loaded, just bring open animation
                 if ($frame_game_item.eq(frame_index).hasClass('game-loaded')) {
-                    FrameGameModule.openAnimation(frame_index);
+                    FrameGameModule.initSelectors(frame_index,function() {
+                        FrameGameModule.openAnimation(frame_index);
+                    });
                 } else {
                     loadingAppear(function() {
 
                         // local version
                         GameModule.getDetailDataByIndex(frame_index, function(detail) {
                             FrameGameModule.bulidGame(frame_index, detail, function() {
-                                loadingDisappear(function() {
-                                    FrameGameModule.openAnimation(frame_index);
+                                FrameGameModule.initSelectors(frame_index,function() {
+                                    loadingDisappear(function() {
+                                        FrameGameModule.openAnimation(frame_index);
+                                    });
                                 });
                             });
                         });
+
+                        //server version
                     });
                 }
             });
@@ -107,7 +113,7 @@ function registerEvents() {
     $frame_game_item.on('click', '.game-choice', function() {
         let $this = $(this);
         let $game_choice = $this.parent().find('li');
-        if ($game_choice.hasClass('made-choice')) return;
+        if ($this.hasClass('made-choice')) return;
 
         let choice = $this.index();
         let $parents = $this.parents('.frame-game-item');
@@ -115,7 +121,7 @@ function registerEvents() {
         let $questionItem = $parents.find('.question-item.show');
         let questionIndex = $questionItem.index();
         $game_choice.removeClass('unmade-choice').addClass('made-choice');
-        $game_choice.eq(choice).addClass('clicked');
+        $game_choice.eq(choice).addClass('selected');
 
         //return answer to server
         //local version
@@ -134,7 +140,24 @@ function switchHandler(answer) {
         case 'change':
             changeMove(answer);
             break;
+        case 'finish':
+            finishMove(answer);
+            break;
     }
+}
+
+function finishMove(answer) {
+    console.log(answer);
+    let ifCorrect = (answer.rightAnswer === answer.choice);
+    console.log(ifCorrect);
+    let $game_choice = $frame_game_item.eq(answer.gameIndex).find('.game-choice');
+
+    for (let i = 0; i < $game_choice.length; i++) {
+        if (i === answer.rightAnswer) continue;
+        $game_choice.eq(i).addClass('wrong');
+    }
+
+    $frame_intro_item.eq(answer.gameIndex).addClass('finished').addClass(ifCorrect?'won':'failed');
 }
 
 function changeMove(answer) {
@@ -149,13 +172,13 @@ function changeMove(answer) {
             $questionItems.removeClass('show');
             let $nextQuestion = $questionItems.eq(answer.questionIndex + 1).addClass('show');
             // let ques = $nextQuestion.text().replace('placeholder',numberToString(answer.wrongAnswer))
-            $nextQuestion.text($nextQuestion.text().replace('placeholder',numberToString(answer.wrongAnswer)).replace('currentAnswer',numberToString(answer.choice)));
+            $nextQuestion.text($nextQuestion.text().replace('placeholder', numberToString(answer.wrongAnswer)).replace('currentAnswer', numberToString(answer.choice)));
 
             // Question fade in
             TweenMax.to($frameGameQuestion, 0.3, {
                 scaleY: 1,
                 onComplete: function() {
-
+                    $frame.find('.game-choice').addClass('unmade-choice').removeClass('made-choice').removeClass('selected').eq(answer.wrongAnswer).addClass('wrong').removeClass('unmade-choice').addClass('made-choice');
                 }
             });
         }
@@ -164,13 +187,14 @@ function changeMove(answer) {
 
 function frameIntroItemSlideLeft(func) {
     if (typeof(func) !== 'function') func = function() {};
+    $frame_intro_item.removeClass('ani');
     for (let i = 0; i < $frame_intro_item.length; i++) {
 
         TweenMax.to($frame_intro_item.eq(i), time_frame_ani, {
             x: '-150%',
             delay: i * time_frame_delay,
             onComplete: function() {
-                $frame_intro_item.eq(i).removeClass('ani');
+                // $frame_intro_item.eq(i).removeClass('ani');
                 func(i);
             },
         });

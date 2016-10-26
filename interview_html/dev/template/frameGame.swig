@@ -10,8 +10,8 @@
             {% for i, item in options %}
                 <li class="game-choice unmade-choice">
                     <span class="number">{{number[i]}}:&nbsp;&nbsp;</span>
-                    {% if item.option %}
-                        <span>{{item.option}}</span>
+                    {% if item.text %}
+                        <span>{{item.text}}</span>
                     {% endif %}
                     {% if item.image %}
                         <img class="option-img" src="{{item.image}}" alt=""/>

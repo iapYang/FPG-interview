@@ -117,6 +117,28 @@ $circle_width: 200px;
                                 height: 25px;
                             }
                         }
+
+                        .finish-word {
+                            position: absolute;
+                            left: 50%;
+                            top: 50%;
+                            @include transform(rotate(5deg) translate(-50%,-50%));
+
+                            span {
+                                display: none;
+                                font-size: 10vw;
+                                letter-spacing: 8px;
+                                font-family: 'Bangers', cursive;
+                            }
+
+                            .pass {
+                                color: #47a899;
+                            }
+
+                            .defeat {
+                                color: #841e1b;
+                            }
+                        }
                     }
                 }
 
@@ -146,6 +168,28 @@ $circle_width: 200px;
             &:nth-child(2) {
                 border-top: 1px solid #e9edef;
                 border-bottom: 1px solid #e9edef;
+            }
+
+            &.finished {
+                background-color: #f1f1f1;
+
+                .frame-intro-item-wrapper {
+                    .frame-intro-item-left .mask {
+                        background-color: #f1f1f1;
+                    }
+                }
+            }
+
+            &.won {
+                .frame-intro-item-wrapper .frame-intro-item-right .info-contianer .finish-word .pass {
+                    display: block;
+                }
+            }
+
+            &.failed {
+                .frame-intro-item-wrapper .frame-intro-item-right .info-contianer .finish-word .defeat {
+                    display: block;
+                }
             }
         }
     }
@@ -262,17 +306,26 @@ $circle_width: 200px;
                                 vertical-align: middle;
                             }
 
-                            &.clicked {
+                            .red-cross {
+                                position: relative;
+                                margin-left: 1vw;
+                                width: 1.8vw;
+                                vertical-align: middle;
+                                opacity: 0;
+                                @include transition(all ease 0.3s);
+                            }
+
+                            &.selected {
                                 .number {
                                     color: #582c2b;
                                     text-shadow: none;
                                 }
                             }
 
-                            .red-cross {
-                                position: relative;
-                                margin-left: 1vw;
-                                width: 20px;
+                            &.wrong {
+                                .red-cross {
+                                    opacity: 1;
+                                }
                             }
                         }
                     }

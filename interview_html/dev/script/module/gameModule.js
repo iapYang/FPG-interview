@@ -19,13 +19,13 @@ let data = [{
     title: 'xxx',
     sub_title: 'yyyyyy',
     star: 5,
-    questions: ['xxxxxxx'],
+    questions: ['1+1'],
     options: [{
-        text: 'zzzzzzzzzz',
+        text: '2',
     }, {
-        text: 'zzzzzzzzzz',
+        text: '1',
     }, {
-        text: 'zzzzzzzzzz',
+        text: '0',
     }],
     answer: 0,
 }, {
@@ -33,13 +33,13 @@ let data = [{
     title: 'xxx',
     sub_title: 'yyyyyy',
     star: 4,
-    questions: ['xxxxxxx'],
+    questions: ['3+3'],
     options: [{
-        text: 'zzzzzzzzzz',
+        text: '6',
     }, {
-        text: 'zzzzzzzzzz',
+        text: '7',
     }, {
-        text: 'zzzzzzzzzz',
+        text: '8',
     }],
     answer: 0,
 }];
@@ -76,7 +76,7 @@ module.check = function(obj, func) {
     let gameIndex = obj.gameIndex;
     let questionIndex = obj.questionIndex;
     let choice = obj.choice;
-    if (data[gameIndex].questions.length > 1 && questionIndex !== 1) {
+    if (questionIndex !== data[gameIndex].questions.length - 1) {
         let choices = [0, 1, 2];
         let rightAnswer = chooseRandomElement(choices);
         data[gameIndex].answer = rightAnswer;
@@ -84,15 +84,19 @@ module.check = function(obj, func) {
         removeElement(choice, choices);
 
         func({
-            gameIndex:gameIndex,
-            questionIndex:questionIndex,
-            choice:choice,
+            gameIndex: gameIndex,
+            questionIndex: questionIndex,
+            choice: choice,
             wrongAnswer: chooseRandomElement(choices),
             move: 'change'
         });
     } else {
-
-
+        func({
+            rightAnswer: data[gameIndex].answer,
+            move: 'finish',
+            gameIndex: gameIndex,
+            choice: choice,
+        });
     }
 };
 
