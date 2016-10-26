@@ -114,7 +114,7 @@ function fillGameFrame(content, index, data, func) {
             questions: data.questions
         },
     });
-    $('.frame-game-item').eq(index).addClass('game-loaded').append(render);
+    $('.frame-game-item').eq(index).data('game-index',index).addClass('game-loaded').append(render);
     func();
 }
 

@@ -6,6 +6,7 @@ import 'fetch-ie8';
 import 'es6-promise';
 
 import FrameGameModule from './frameGameModule.js';
+import GameModule from './gameModule.js';
 
 let time_frame_ani = 0.5;
 let time_frame_delay = 0.2;
@@ -19,39 +20,8 @@ let $loading = $('.loading');
 let $frame_intro_item;
 let $frame_game_item;
 
-let detail = [{
-    questions: ['There\'re three doors on the left, one of them is the correct door. Please make your choice.'],
-    options: [{
-        image: './image/door_1204922_easyicon.net.svg',
-    }, {
-        image: './image/door_1204922_easyicon.net.svg',
-    }, {
-        image: './image/door_1204922_easyicon.net.svg',
-    }],
-}, {
-    questions: ['xxxxxxx'],
-    options: [{
-        text: 'zzzzzzzzzz',
-    }, {
-        text: 'zzzzzzzzzz',
-    }, {
-        text: 'zzzzzzzzzz',
-    }],
-}, {
-    questions: ['xxxxxxx'],
-    options: [{
-        text: 'zzzzzzzzzz',
-    }, {
-        text: 'zzzzzzzzzz',
-    }, {
-        text: 'zzzzzzzzzz',
-    }],
-}];
-
 module.fitScreen = function() {
-    $dom.css({
-        'height': $window.height()
-    });
+
 };
 
 module.buildPage = function(data) {
@@ -107,9 +77,13 @@ function registerEvents() {
                     FrameGameModule.openAnimation(frame_index);
                 } else {
                     loadingAppear(function() {
-                        FrameGameModule.bulidGame(frame_index, detail[frame_index], function() {
-                            loadingDisappear(function() {
-                                FrameGameModule.openAnimation(frame_index);
+
+                        // local version
+                        GameModule.getDetailDataByIndex(frame_index, function(detail) {
+                            FrameGameModule.bulidGame(frame_index, detail, function() {
+                                loadingDisappear(function() {
+                                    FrameGameModule.openAnimation(frame_index);
+                                });
                             });
                         });
                     });
@@ -128,6 +102,63 @@ function registerEvents() {
 
             frameIntroItemSlideRight();
         });
+    });
+
+    $frame_game_item.on('click', '.game-choice', function() {
+        let $this = $(this);
+        let $game_choice = $this.parent().find('li');
+        if ($game_choice.hasClass('made-choice')) return;
+
+        let choice = $this.index();
+        let $parents = $this.parents('.frame-game-item');
+        let gameIndex = $parents.data('game-index');
+        let $questionItem = $parents.find('.question-item.show');
+        let questionIndex = $questionItem.index();
+        $game_choice.removeClass('unmade-choice').addClass('made-choice');
+        $game_choice.eq(choice).addClass('clicked');
+
+        //return answer to server
+        //local version
+        GameModule.check({
+            gameIndex: gameIndex,
+            choice: choice,
+            questionIndex: questionIndex
+        }, function(data) {
+            switchHandler(data);
+        });
+    });
+}
+
+function switchHandler(answer) {
+    switch (answer.move) {
+        case 'change':
+            changeMove(answer);
+            break;
+    }
+}
+
+function changeMove(answer) {
+    let $frame = $frame_game_item.eq(answer.gameIndex);
+    let $frameGameQuestion = $frame.find('.frame-game-question');
+    let $questionItems = $frame.find('.question-item');
+
+    // Question fade out
+    TweenMax.to($frameGameQuestion, 0.3, {
+        scaleY: 0,
+        onComplete: function() {
+            $questionItems.removeClass('show');
+            let $nextQuestion = $questionItems.eq(answer.questionIndex + 1).addClass('show');
+            // let ques = $nextQuestion.text().replace('placeholder',numberToString(answer.wrongAnswer))
+            $nextQuestion.text($nextQuestion.text().replace('placeholder',numberToString(answer.wrongAnswer)).replace('currentAnswer',numberToString(answer.choice)));
+
+            // Question fade in
+            TweenMax.to($frameGameQuestion, 0.3, {
+                scaleY: 1,
+                onComplete: function() {
+
+                }
+            });
+        }
     });
 }
 
@@ -165,7 +196,7 @@ function frameGameListSlideLeft(func) {
     TweenMax.to($frame_game_list, time_frame_ani, {
         autoAlpha: 1,
         x: '-100%',
-        ease:'easeOutSine',
+        ease: 'easeOutSine',
         onComplete: func(),
     });
 }
@@ -176,7 +207,7 @@ function frameGameListSlideRight(func) {
     TweenMax.to($frame_game_list, time_frame_ani, {
         autoAlpha: 0,
         x: '0%',
-        ease:'easeOutSine',
+        ease: 'easeOutSine',
         onComplete: func(),
     });
 }
@@ -197,6 +228,22 @@ function loadingAppear(func) {
         autoAlpha: 1,
         onComplete: func(),
     });
+}
+
+function numberToString(index) {
+    switch (index) {
+        case 0:
+            return 'A';
+            // break;
+        case 1:
+            return 'B';
+            // break;
+        case 2:
+            return 'C';
+            // break;
+        default:
+            return 'Z';
+    }
 }
 
 export default module;

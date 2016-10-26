@@ -6,6 +6,9 @@ $circle_width: 200px;
     position: relative;
     background-color: #fff;
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: none;
 
     .frame-intro-list {
         position: relative;
@@ -235,6 +238,7 @@ $circle_width: 200px;
                             margin: 30px 0;
                             @include transform(translateY(20px));
                             opacity: 0;
+                            cursor: pointer;
 
                             span {
                                 color: #582c2b;
@@ -245,11 +249,30 @@ $circle_width: 200px;
                                 padding-right: 20px;
                             }
 
+                            .number {
+                                color: #f1f1f1;
+                                text-shadow: 3px 3px 0 #582c2b, -1px -1px 0 #582c2b, 1px -1px 0 #582c2b, -1px 1px 0 #582c2b, 1px 1px 0 #582c2b;
+                                @include transition(all ease 0.3s);
+                            }
+
                             .option-img {
                                 position: relative;
                                 display: inline-block;
                                 width: 11vw;
                                 vertical-align: middle;
+                            }
+
+                            &.clicked {
+                                .number {
+                                    color: #582c2b;
+                                    text-shadow: none;
+                                }
+                            }
+
+                            .red-cross {
+                                position: relative;
+                                margin-left: 1vw;
+                                width: 20px;
                             }
                         }
                     }
@@ -277,9 +300,14 @@ $circle_width: 200px;
                         opacity: 0;
 
                         span {
-                            font-size: 4vw;
-                            font-family: 'Amita', cursive;
+                            font-size: 3vw;
+                            font-family: 'Titillium Web', sans-serif;
                             line-height: 1.5;
+                            display: none;
+                        }
+
+                        .show {
+                            display: inline;
                         }
                     }
 
@@ -430,6 +458,11 @@ $circle_width: 200px;
     .frame-game-list .frame-game-item {
         .page-back:hover {
             @include transform(translateX(-$translate_x));
+        }
+
+        .frame-game-wrapper .frame-game-left .options .unmade-choice:hover .number {
+            color: #582c2b;
+            text-shadow: none;
         }
     }
 }
