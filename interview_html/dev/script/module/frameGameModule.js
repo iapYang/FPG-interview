@@ -24,9 +24,9 @@ module.bulidGame = function(index, data, func) {
 };
 
 module.openAnimation = function(index) {
-    TweenMax.to($circle, time_animation, {
+    TweenMax.to($circle, 0.8, {
         scale: 1,
-        rotation: '720deg'
+        rotation: '360deg'
     });
     TweenMax.to($line_top_bar, time_animation / 2, {
         width: '100%',
@@ -140,7 +140,7 @@ module.initSelectors = function(index, func) {
     $options = $dom.find('.options');
     $options_li = $dom.find('.options').find('li');
     $frame_game_question = $dom.find('.frame-game-question');
-    
+
     func();
 }
 

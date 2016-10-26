@@ -9,6 +9,7 @@ import FrameGameModule from './frameGameModule.js';
 import GameModule from './gameModule.js';
 
 let time_frame_ani = 0.5;
+let time_fade_ani = 0.3;
 let time_frame_delay = 0.2;
 let frame_index = 0;
 
@@ -64,8 +65,7 @@ function registerEvents() {
     $frame_intro_item.on('click', function() {
         frame_index = $frame_intro_item.index(this);
 
-        frameIntroItemSlideLeft(function(i) {
-            if (i !== $frame_intro_item.length - 1) return;
+        frameIntroItemSlideLeft(function() {
 
             frameGameListSlideLeft(function() {
                 TweenMax.set($frame_game_item.eq(frame_index), {
@@ -74,7 +74,7 @@ function registerEvents() {
 
                 // if this game has loaded, just bring open animation
                 if ($frame_game_item.eq(frame_index).hasClass('game-loaded')) {
-                    FrameGameModule.initSelectors(frame_index,function() {
+                    FrameGameModule.initSelectors(frame_index, function() {
                         FrameGameModule.openAnimation(frame_index);
                     });
                 } else {
@@ -83,7 +83,7 @@ function registerEvents() {
                         // local version
                         GameModule.getDetailDataByIndex(frame_index, function(detail) {
                             FrameGameModule.bulidGame(frame_index, detail, function() {
-                                FrameGameModule.initSelectors(frame_index,function() {
+                                FrameGameModule.initSelectors(frame_index, function() {
                                     loadingDisappear(function() {
                                         FrameGameModule.openAnimation(frame_index);
                                     });
@@ -147,9 +147,7 @@ function switchHandler(answer) {
 }
 
 function finishMove(answer) {
-    console.log(answer);
     let ifCorrect = (answer.rightAnswer === answer.choice);
-    console.log(ifCorrect);
     let $game_choice = $frame_game_item.eq(answer.gameIndex).find('.game-choice');
 
     for (let i = 0; i < $game_choice.length; i++) {
@@ -157,7 +155,7 @@ function finishMove(answer) {
         $game_choice.eq(i).addClass('wrong');
     }
 
-    $frame_intro_item.eq(answer.gameIndex).addClass('finished').addClass(ifCorrect?'won':'failed');
+    $frame_intro_item.eq(answer.gameIndex).addClass('finished').addClass(ifCorrect ? 'won' : 'failed');
 }
 
 function changeMove(answer) {
@@ -175,7 +173,7 @@ function changeMove(answer) {
             $nextQuestion.text($nextQuestion.text().replace('placeholder', numberToString(answer.wrongAnswer)).replace('currentAnswer', numberToString(answer.choice)));
 
             // Question fade in
-            TweenMax.to($frameGameQuestion, 0.3, {
+            TweenMax.to($frameGameQuestion, time_fade_ani, {
                 scaleY: 1,
                 onComplete: function() {
                     $frame.find('.game-choice').addClass('unmade-choice').removeClass('made-choice').removeClass('selected').eq(answer.wrongAnswer).addClass('wrong').removeClass('unmade-choice').addClass('made-choice');
@@ -188,14 +186,18 @@ function changeMove(answer) {
 function frameIntroItemSlideLeft(func) {
     if (typeof(func) !== 'function') func = function() {};
     $frame_intro_item.removeClass('ani');
+    let counter = 0;
     for (let i = 0; i < $frame_intro_item.length; i++) {
 
-        TweenMax.to($frame_intro_item.eq(i), time_frame_ani, {
-            x: '-150%',
+        TweenMax.to($frame_intro_item.eq(i), time_fade_ani, {
+            // x: '-150%',
+            autoAlpha: 0,
             delay: i * time_frame_delay,
             onComplete: function() {
-                // $frame_intro_item.eq(i).removeClass('ani');
-                func(i);
+                counter++;
+                if (counter !== $frame_intro_item.length) return;
+                console.log('---=====---in');
+                func();
             },
         });
     }
@@ -204,7 +206,10 @@ function frameIntroItemSlideLeft(func) {
 function frameIntroItemSlideRight(func) {
     if (typeof(func) !== 'function') func = function() {};
     for (let i = 0; i < $frame_intro_item.length; i++) {
-        TweenMax.to($frame_intro_item.eq(i), time_frame_ani, {
+        TweenMax.fromTo($frame_intro_item.eq(i), time_frame_ani,{
+            x: '-150%',
+            autoAlpha: 1,
+        },{
             x: '0%',
             delay: i * time_frame_delay,
             onComplete: function() {

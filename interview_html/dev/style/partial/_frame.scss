@@ -23,7 +23,8 @@ $circle_width: 200px;
             height: 33.33333%;
             cursor: pointer;
             @include transform(translateX(-150%));
-            @include transition(all ease $animation_time);
+            @include transition(background-color ease $animation_time);
+            @include transform(translate3d(0,0,0));
 
             .frame-intro-item-wrapper {
                 position: absolute;
@@ -38,6 +39,7 @@ $circle_width: 200px;
                     left: 0;
                     top: 0;
                     overflow: hidden;
+                    @include transform(translate3d(0,0,0));
 
                     img {
                         position: relative;
