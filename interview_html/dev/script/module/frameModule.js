@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import swig from 'swig';
 import fetchJsonp from 'fetch-jsonp';
+import PictureLoader from '../component/pictureLoader';
 
 import 'fetch-ie8';
 import 'es6-promise';
@@ -43,22 +44,32 @@ function insertIntro(data) {
 }
 
 function fillIntro(content, data) {
+    let preload = [];
+
     data.forEach(function(item, i) {
+        let src = './image/' + item.image;
+        preload.push(src);
+
         let render = swig.render(content, {
             locals: {
                 category: item.category,
                 title: item.title,
                 sub_title: item.sub_title,
-                star: item.star
+                star: item.star,
+                image:src
             },
         });
         $frame_intro_list.append($(render));
         $frame_game_list.append($('<div></div>').addClass('frame-game-item'));
     });
 
-    loadingDisappear(function() {
-        registerEvents();
-        frameIntroItemSlideRight();
+    new PictureLoader(preload).load({
+        end: () => {
+            loadingDisappear(function() {
+                registerEvents();
+                frameIntroItemSlideRight();
+            });
+        }
     });
 }
 
@@ -116,6 +127,7 @@ function registerEvents() {
                 if (finished_count !== $frame_intro_item.length) return;
                 if($evaluationFrame.hasClass('loaded')) return;
                 GameModule.evaluation(function(data) {
+                    $evaluationFrame.addClass('loaded');
                     EvaluationFrameModule.buildPage(data);
                 });
             });

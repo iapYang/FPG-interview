@@ -5,6 +5,8 @@ import fetchJsonp from 'fetch-jsonp';
 import 'fetch-ie8';
 import 'es6-promise';
 
+import PictureLoader from '../component/pictureLoader';
+
 let time_animation = 2;
 let time_fade = 0.3;
 
@@ -118,6 +120,9 @@ function insertGameFrame(index, data, func) {
 }
 
 function fillGameFrame(content, index, data, func) {
+    let preload = [];
+    let src = './image/' + data.image;
+
     let render = swig.render(content, {
         locals: {
             index: index + 1,
@@ -125,8 +130,15 @@ function fillGameFrame(content, index, data, func) {
             questions: data.questions
         },
     });
-    $('.frame-game-item').eq(index).data('game-index', index).addClass('game-loaded').append(render);
-    func();
+
+    new PictureLoader([preload]).load({
+        end: () => {
+            $('.frame-game-item').eq(index)
+                .data('game-index', index).addClass('game-loaded').append(render)
+                .find('.circle').css('background-image', 'url(' + src + ')');
+            func();
+        }
+    });
 }
 
 module.initSelectors = function(index, func) {

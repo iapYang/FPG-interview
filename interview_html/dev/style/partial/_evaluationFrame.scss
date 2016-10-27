@@ -39,35 +39,28 @@
         @include align-items(center);
         @include justify-content(center);
 
-        .evaluation-item {
-            position: relative;
-            width: 100%;
-            vertical-align: middle;
+        .part {
+            display: block;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            @include transform(translateY(20px));
 
-            .part {
-                display: block;
-                text-align: center;
-                opacity: 0;
-                visibility: hidden;
-                @include transform(translateY(20px));
-
-                span {
-                    color: #f1f1f1;
-                }
+            span {
+                color: #f1f1f1;
             }
+        }
 
-            .title {
-                span {
-                    font-size: 5vw;
-                    font-family: 'Indie Flower', cursive;
-                }
+        .thanks {
+            span{
+                font-size: 11vw;
+                font-family: 'Indie Flower', cursive;
             }
-
-            .evaluation-word {
-                span {
-                    font-size: 4vw;
-                    font-family: 'Bangers', cursive;
-                }
+        }
+        .evaluation {
+            span {
+                font-size: 10vw;
+                font-family: 'Bangers', cursive;
             }
         }
     }

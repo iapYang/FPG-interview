@@ -30,7 +30,7 @@ function insertGameFrame(data, func) {
 function fillGameFrame(content, data, func) {
     let render = swig.render(content, {
         locals: {
-            evaluations: data
+            evaluation: data.evaluation
         },
     });
     $evaluationFrame.append(render).css('display', 'block');
@@ -40,7 +40,12 @@ function fillGameFrame(content, data, func) {
     TweenMax.to('html,body', 1, {
         scrollTop: $evaluationFrame.offset().top,
         onComplete: function() {
-            openAnimation();
+            TweenMax.staggerTo($evaluationFrame.find('.part'), time_fade, {
+                y: 0,
+                autoAlpha: 1
+            }, time_delay, function() {
+
+            });
             func();
         }
     });

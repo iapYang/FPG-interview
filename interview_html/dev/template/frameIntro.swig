@@ -2,7 +2,7 @@
     <div class="frame-intro-item-wrapper">
         <div class="frame-intro-item-left">
             <div class="left-mask mask"></div>
-            <img src="./image/trends.jpg" alt=""/>
+            <img src={{image}} alt=""/>
             <div class="right-mask mask"></div>
         </div>
         <div class="frame-intro-item-right">
@@ -32,8 +32,8 @@
                     {%- endfor %}
                 </div>
                 <div class="finish-word">
-                    <span class="pass">pass</span>
-                    <span class="defeat">defeat</span>
+                    <span class="correct">correct</span>
+                    <span class="incorrect">incorrect</span>
                 </div>
             </div>
         </div>
