@@ -1,6 +1,9 @@
 import $ from 'jquery';
 import swig from 'swig';
 import TweenMax from 'gsap';
+import fetchJsonp from 'fetch-jsonp';
+import 'fetch-ie8';
+import 'es6-promise';
 
 let time_animation = 2;
 let time_fade = 0.3;

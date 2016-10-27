@@ -6,7 +6,16 @@
 <div class="frame-game-wrapper">
     <div class="frame-game-left frame-game-part">
         <ul class="options">
-            {% set number = ['A', 'B', 'C'] %}
+            {% set number = [
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+                'F',
+                'G',
+                'H'
+            ] %}
             {% for i, item in options %}
                 <li class="game-choice unmade-choice">
                     <span class="number">{{number[i]}}:&nbsp;&nbsp;</span>
@@ -16,7 +25,7 @@
                     {% if item.image %}
                         <img class="option-img" src="{{item.image}}" alt=""/>
                     {% endif %}
-                    <img class="red-cross" src="./image/cross_1187636_easyicon.net.svg" alt="" />
+                    <img class="red-cross" src="./image/cross_1187636_easyicon.net.svg" alt=""/>
                 </li>
             {% endfor %}
         </ul>

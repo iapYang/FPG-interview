@@ -1,0 +1,74 @@
+.evaluationFrame {
+    position: relative;
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+
+    .scroll-up {
+        position: absolute;
+        width: 100%;
+        top: 10px;
+        left: 0;
+        opacity: 1;
+        @include transform(rotate(180deg));
+
+        .scroll-up-button {
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+
+            svg {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .evaluation-list {
+        position: absolute;
+        top: 48px;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        @include display-flex;
+        @include flex-direction(column);
+        @include align-items(center);
+        @include justify-content(center);
+
+        .evaluation-item {
+            position: relative;
+            width: 100%;
+            vertical-align: middle;
+
+            .part {
+                display: block;
+                text-align: center;
+                opacity: 0;
+                visibility: hidden;
+                @include transform(translateY(20px));
+
+                span {
+                    color: #f1f1f1;
+                }
+            }
+
+            .title {
+                span {
+                    font-size: 5vw;
+                    font-family: 'Indie Flower', cursive;
+                }
+            }
+
+            .evaluation-word {
+                span {
+                    font-size: 4vw;
+                    font-family: 'Bangers', cursive;
+                }
+            }
+        }
+    }
+}

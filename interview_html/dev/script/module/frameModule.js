@@ -7,11 +7,14 @@ import 'es6-promise';
 
 import FrameGameModule from './frameGameModule.js';
 import GameModule from './gameModule.js';
+import EvaluationFrameModule from './evaluationFrameModule.js';
 
 let time_frame_ani = 0.5;
 let time_fade_ani = 0.3;
 let time_frame_delay = 0.2;
+let time_autoBack = 2.5;
 let frame_index = 0;
+let finished_count = 0
 
 let $dom = $('.frame-list');
 let $window = $(window);
@@ -20,6 +23,7 @@ let $frame_game_list = $('.frame-game-list');
 let $loading = $('.loading');
 let $frame_intro_item;
 let $frame_game_item;
+let $evaluationFrame = $('.evaluationFrame');
 
 module.fitScreen = function() {
 
@@ -99,6 +103,8 @@ function registerEvents() {
     });
 
     $frame_game_item.on('click', '.page-back', function() {
+        TweenMax.killDelayedCallsTo(pageBackTriggerClick);
+
         frameGameListSlideRight(function() {
             TweenMax.set($frame_game_item, {
                 autoAlpha: 0,
@@ -106,7 +112,13 @@ function registerEvents() {
 
             FrameGameModule.reset((frame_index));
 
-            frameIntroItemSlideRight();
+            frameIntroItemSlideRight(function() {
+                if (finished_count !== $frame_intro_item.length) return;
+                if($evaluationFrame.hasClass('loaded')) return;
+                GameModule.evaluation(function(data) {
+                    EvaluationFrameModule.buildPage(data);
+                });
+            });
         });
     });
 
@@ -147,7 +159,6 @@ function switchHandler(answer) {
 }
 
 function finishMove(answer) {
-    let ifCorrect = (answer.rightAnswer === answer.choice);
     let $game_choice = $frame_game_item.eq(answer.gameIndex).find('.game-choice');
 
     for (let i = 0; i < $game_choice.length; i++) {
@@ -155,7 +166,15 @@ function finishMove(answer) {
         $game_choice.eq(i).addClass('wrong');
     }
 
-    $frame_intro_item.eq(answer.gameIndex).addClass('finished').addClass(ifCorrect ? 'won' : 'failed');
+    $frame_intro_item.eq(answer.gameIndex).addClass('finished').addClass(answer.ifCorrect ? 'won' : 'failed');
+
+    finished_count++;
+
+    TweenMax.delayedCall(time_autoBack, pageBackTriggerClick, [answer]);
+}
+
+function pageBackTriggerClick(answer) {
+    $frame_game_item.eq(answer.gameIndex).find('.page-back').trigger('click');
 }
 
 function changeMove(answer) {
@@ -186,37 +205,25 @@ function changeMove(answer) {
 function frameIntroItemSlideLeft(func) {
     if (typeof(func) !== 'function') func = function() {};
     $frame_intro_item.removeClass('ani');
-    let counter = 0;
-    for (let i = 0; i < $frame_intro_item.length; i++) {
 
-        TweenMax.to($frame_intro_item.eq(i), time_fade_ani, {
-            // x: '-150%',
-            autoAlpha: 0,
-            delay: i * time_frame_delay,
-            onComplete: function() {
-                counter++;
-                if (counter !== $frame_intro_item.length) return;
-                console.log('---=====---in');
-                func();
-            },
-        });
-    }
+    TweenMax.staggerTo($frame_intro_item, time_frame_ani, {
+        x: '-150%',
+    }, time_frame_delay, function() {
+        func();
+    });
 }
 
 function frameIntroItemSlideRight(func) {
     if (typeof(func) !== 'function') func = function() {};
-    for (let i = 0; i < $frame_intro_item.length; i++) {
-        TweenMax.fromTo($frame_intro_item.eq(i), time_frame_ani,{
-            x: '-150%',
-            autoAlpha: 1,
-        },{
-            x: '0%',
-            delay: i * time_frame_delay,
-            onComplete: function() {
-                $frame_intro_item.eq(i).addClass('ani');
-            },
-        });
-    }
+    TweenMax.staggerFromTo($frame_intro_item, time_frame_ani, {
+        x: '-150%',
+        autoAlpha: 1,
+    }, {
+        x: '0%',
+    }, time_frame_delay, function() {
+        $frame_intro_item.addClass('ani');
+        func();
+    });
 }
 
 function frameGameListSlideLeft(func) {

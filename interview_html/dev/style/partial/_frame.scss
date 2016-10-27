@@ -122,19 +122,23 @@ $circle_width: 200px;
 
                         .finish-word {
                             position: absolute;
+                            display: block;
+                            width: auto;
                             left: 50%;
                             top: 50%;
-                            @include transform(rotate(5deg) translate(-50%,-50%));
+                            @include transform(rotate(0deg) translate(-50%,-50%));
 
                             span {
                                 display: none;
                                 font-size: 10vw;
                                 letter-spacing: 8px;
-                                font-family: 'Bangers', cursive;
+                                font-weight: 700;
+                                font-family: 'Gloria Hallelujah', cursive;
+                                text-transform: uppercase;
                             }
 
                             .pass {
-                                color: #47a899;
+                                color: #285943;
                             }
 
                             .defeat {
@@ -285,6 +289,7 @@ $circle_width: 200px;
                             @include transform(translateY(20px));
                             opacity: 0;
                             cursor: pointer;
+                            text-align: left;
 
                             span {
                                 color: #582c2b;
@@ -355,7 +360,7 @@ $circle_width: 200px;
                         opacity: 0;
 
                         span {
-                            font-size: 3vw;
+                            font-size: 2.1vw;
                             font-family: 'Titillium Web', sans-serif;
                             line-height: 1.5;
                             display: none;
