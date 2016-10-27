@@ -1,53 +1,66 @@
 import $ from 'jquery';
 import swig from 'swig';
 import TweenMax from 'gsap';
+import fetchJsonp from 'fetch-jsonp';
+import 'fetch-ie8';
+import 'es6-promise';
 
 let time_animation = 2;
 let time_fade = 0.3;
 
+// selectors
+let $dom;
+let $circle;
+let $line_top_bar;
+let $line_right_bar;
+let $line_bottom_bar;
+let $line_left_bar;
+let $page_back;
+let $divide_line;
+let $options;
+let $options_li;
+let $frame_game_question;
+
 module.bulidGame = function(index, data, func) {
+    if (typeof(func) !== 'function') func = function() {};
     insertGameFrame(index, data, func);
 };
 
 module.openAnimation = function(index) {
-    let $dom = $('.frame-game-item').eq(index);
-
-    TweenMax.to($dom.find('.circle'), time_animation, {
+    TweenMax.to($circle, 0.8, {
         scale: 1,
-        rotation: '720deg'
+        rotation: '360deg'
     });
-    TweenMax.to($dom.find('.line-top').find('.bar'), time_animation / 2, {
+    TweenMax.to($line_top_bar, time_animation / 2, {
         width: '100%',
         delay: time_animation * 0.3,
         onComplete: function() {
-            TweenMax.to($dom.find('.line-right').find('.bar'), time_animation / 3, {
+            TweenMax.to($line_right_bar, time_animation / 3, {
                 height: '100%',
             });
         },
     });
 
-    TweenMax.to($dom.find('.line-left').find('.bar'), time_animation / 2, {
+    TweenMax.to($line_left_bar, time_animation / 2, {
         height: '100%',
         delay: time_animation * 0.3,
         onComplete: function() {
-            TweenMax.to($dom.find('.line-bottom').find('.bar'), time_animation / 3, {
+            TweenMax.to($line_bottom_bar, time_animation / 3, {
                 width: '100%',
                 onComplete: function() {
-                    TweenMax.to($dom.find('.page-back'), time_fade, {
+                    TweenMax.to($page_back, time_fade, {
                         autoAlpha: 1
                     });
 
-                    TweenMax.to($dom.find('.divide-line'), time_fade, {
+                    TweenMax.to($divide_line, time_fade, {
                         scaleY: 1,
                         onComplete: function() {
-                            TweenMax.to($dom.find('.frame-game-question'),time_fade,{
-                                scaleY:1,
-                                autoAlpha:1,
+                            TweenMax.to($frame_game_question, time_fade, {
+                                scaleY: 1,
+                                autoAlpha: 1,
                             });
                         }
                     });
-
-                    let $options_li = $dom.find('.options').find('li');
 
                     for (let i = 0; i < $options_li.length; i++) {
                         TweenMax.to($options_li.eq(i), time_fade, {
@@ -63,37 +76,35 @@ module.openAnimation = function(index) {
 };
 
 module.reset = function(index) {
-    let $dom = $('.frame-game-item').eq(index);
-
-    TweenMax.set($dom.find('.circle'), {
+    TweenMax.set($circle, {
         scale: 0,
         rotation: 0
     });
-    TweenMax.set($dom.find('.line-top').find('.bar'), {
+    TweenMax.set($line_top_bar, {
         width: '0%'
     });
-    TweenMax.set($dom.find('.line-right').find('.bar'), {
+    TweenMax.set($line_right_bar, {
         height: '0%'
     });
-    TweenMax.set($dom.find('.line-bottom').find('.bar'), {
+    TweenMax.set($line_bottom_bar, {
         width: '0%'
     });
-    TweenMax.set($dom.find('.line-left').find('.bar'), {
+    TweenMax.set($line_left_bar, {
         height: '0%'
     });
-    TweenMax.set($dom.find('.page-back'), {
+    TweenMax.set($page_back, {
         autoAlpha: 0
     });
-    TweenMax.set($dom.find('.divide-line'), {
+    TweenMax.set($divide_line, {
         scaleY: 0
     });
-    TweenMax.set($dom.find('.options').find('li'), {
+    TweenMax.set($options_li, {
         y: 20,
         autoAlpha: 0,
     });
-    TweenMax.set($dom.find('.frame-game-question'),{
-        scaleY:0,
-        autoAlpha:0,
+    TweenMax.set($frame_game_question, {
+        scaleY: 0,
+        autoAlpha: 0,
     });
 }
 
@@ -114,7 +125,25 @@ function fillGameFrame(content, index, data, func) {
             questions: data.questions
         },
     });
-    $('.frame-game-item').eq(index).addClass('game-loaded').append(render);
+    $('.frame-game-item').eq(index).data('game-index', index).addClass('game-loaded').append(render);
+    func();
+}
+
+module.initSelectors = function(index, func) {
+    if (typeof(func) !== 'function') func = function() {};
+
+    $dom = $('.frame-game-item').eq(index);
+    $circle = $dom.find('.circle');
+    $line_top_bar = $dom.find('.line-top').find('.bar');
+    $line_right_bar = $dom.find('.line-right').find('.bar');
+    $line_bottom_bar = $dom.find('.line-bottom').find('.bar');
+    $line_left_bar = $dom.find('.line-left').find('.bar');
+    $page_back = $dom.find('.page-back');
+    $divide_line = $dom.find('.divide-line');
+    $options = $dom.find('.options');
+    $options_li = $dom.find('.options').find('li');
+    $frame_game_question = $dom.find('.frame-game-question');
+
     func();
 }
 

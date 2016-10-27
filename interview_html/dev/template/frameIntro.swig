@@ -29,8 +29,11 @@
                             10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
                         </svg>
                         {% endif %}
-
                     {%- endfor %}
+                </div>
+                <div class="finish-word">
+                    <span class="pass">pass</span>
+                    <span class="defeat">defeat</span>
                 </div>
             </div>
         </div>

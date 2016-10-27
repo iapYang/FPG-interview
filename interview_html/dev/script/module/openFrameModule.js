@@ -14,8 +14,7 @@ let $path = $holder.find('path');
 let $scroll_down = $dom.find('.scroll-down');
 
 module.fitScreen = function() {
-    // $dom.width($window.width());
-    $dom.height($window.height())
+    
 };
 
 module.startAni = function() {

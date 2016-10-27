@@ -6,6 +6,9 @@ $circle_width: 200px;
     position: relative;
     background-color: #fff;
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: none;
 
     .frame-intro-list {
         position: relative;
@@ -20,7 +23,8 @@ $circle_width: 200px;
             height: 33.33333%;
             cursor: pointer;
             @include transform(translateX(-150%));
-            @include transition(all ease $animation_time);
+            @include transition(background-color ease $animation_time);
+            @include transform(translate3d(0,0,0));
 
             .frame-intro-item-wrapper {
                 position: absolute;
@@ -35,6 +39,7 @@ $circle_width: 200px;
                     left: 0;
                     top: 0;
                     overflow: hidden;
+                    @include transform(translate3d(0,0,0));
 
                     img {
                         position: relative;
@@ -114,6 +119,32 @@ $circle_width: 200px;
                                 height: 25px;
                             }
                         }
+
+                        .finish-word {
+                            position: absolute;
+                            display: block;
+                            width: auto;
+                            left: 50%;
+                            top: 50%;
+                            @include transform(rotate(0deg) translate(-50%,-50%));
+
+                            span {
+                                display: none;
+                                font-size: 10vw;
+                                letter-spacing: 8px;
+                                font-weight: 700;
+                                font-family: 'Gloria Hallelujah', cursive;
+                                text-transform: uppercase;
+                            }
+
+                            .pass {
+                                color: #285943;
+                            }
+
+                            .defeat {
+                                color: #841e1b;
+                            }
+                        }
                     }
                 }
 
@@ -143,6 +174,28 @@ $circle_width: 200px;
             &:nth-child(2) {
                 border-top: 1px solid #e9edef;
                 border-bottom: 1px solid #e9edef;
+            }
+
+            &.finished {
+                background-color: #f1f1f1;
+
+                .frame-intro-item-wrapper {
+                    .frame-intro-item-left .mask {
+                        background-color: #f1f1f1;
+                    }
+                }
+            }
+
+            &.won {
+                .frame-intro-item-wrapper .frame-intro-item-right .info-contianer .finish-word .pass {
+                    display: block;
+                }
+            }
+
+            &.failed {
+                .frame-intro-item-wrapper .frame-intro-item-right .info-contianer .finish-word .defeat {
+                    display: block;
+                }
             }
         }
     }
@@ -235,6 +288,8 @@ $circle_width: 200px;
                             margin: 30px 0;
                             @include transform(translateY(20px));
                             opacity: 0;
+                            cursor: pointer;
+                            text-align: left;
 
                             span {
                                 color: #582c2b;
@@ -245,11 +300,39 @@ $circle_width: 200px;
                                 padding-right: 20px;
                             }
 
+                            .number {
+                                color: #f1f1f1;
+                                text-shadow: 3px 3px 0 #582c2b, -1px -1px 0 #582c2b, 1px -1px 0 #582c2b, -1px 1px 0 #582c2b, 1px 1px 0 #582c2b;
+                                @include transition(all ease 0.3s);
+                            }
+
                             .option-img {
                                 position: relative;
                                 display: inline-block;
                                 width: 11vw;
                                 vertical-align: middle;
+                            }
+
+                            .red-cross {
+                                position: relative;
+                                margin-left: 1vw;
+                                width: 1.8vw;
+                                vertical-align: middle;
+                                opacity: 0;
+                                @include transition(all ease 0.3s);
+                            }
+
+                            &.selected {
+                                .number {
+                                    color: #582c2b;
+                                    text-shadow: none;
+                                }
+                            }
+
+                            &.wrong {
+                                .red-cross {
+                                    opacity: 1;
+                                }
                             }
                         }
                     }
@@ -277,9 +360,14 @@ $circle_width: 200px;
                         opacity: 0;
 
                         span {
-                            font-size: 4vw;
-                            font-family: 'Amita', cursive;
+                            font-size: 2.1vw;
+                            font-family: 'Titillium Web', sans-serif;
                             line-height: 1.5;
+                            display: none;
+                        }
+
+                        .show {
+                            display: inline;
                         }
                     }
 
@@ -430,6 +518,11 @@ $circle_width: 200px;
     .frame-game-list .frame-game-item {
         .page-back:hover {
             @include transform(translateX(-$translate_x));
+        }
+
+        .frame-game-wrapper .frame-game-left .options .unmade-choice:hover .number {
+            color: #582c2b;
+            text-shadow: none;
         }
     }
 }
