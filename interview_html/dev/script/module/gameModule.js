@@ -6,7 +6,7 @@ let data = [{
     title: 'Three Doors',
     sub_title: 'This one is a simple game which requires luck and intellgency. You\'ll have two tries to catch the right choice, I\'ll give you hints, Can you get it done?',
     star: 3,
-    image: 'trends.jpg',
+    image: 'trends-1024x563.jpg',
     questions: ['There\'re three doors on the left, one of them is the correct door. Choose the one that you think is right.', 'Well, the difficult part comes. Your choice is currentAnswer. I\'m gonna tell you the placeholder is a wrong answer, you can choose to whether changing your answer.'],
     options: [{
         image: './image/door_1204922_easyicon.net.svg',
