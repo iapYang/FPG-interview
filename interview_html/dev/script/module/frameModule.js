@@ -95,18 +95,37 @@ function registerEvents() {
                 } else {
                     loadingAppear(function() {
 
-                        // local version
-                        GameModule.getDetailDataByIndex(frame_index, function(detail) {
-                            FrameGameModule.bulidGame(frame_index, detail, function() {
-                                FrameGameModule.initSelectors(frame_index, function() {
-                                    loadingDisappear(function() {
-                                        FrameGameModule.openAnimation(frame_index);
+                        if(window.server) {
+                            //server version
+                            $.ajax({
+                                url: window.server_url + '/detailData',
+                                type: "GET",
+                                data: {
+                                    index: frame_index
+                                },
+                                success: function(data) {
+                                    console.log(data);
+                                    FrameGameModule.bulidGame(frame_index, data, function() {
+                                        FrameGameModule.initSelectors(frame_index, function() {
+                                            loadingDisappear(function() {
+                                                FrameGameModule.openAnimation(frame_index);
+                                            });
+                                        });
+                                    });
+                                },
+                            });
+                        }else {
+                            // local version
+                            GameModule.getDetailDataByIndex(frame_index, function(detail) {
+                                FrameGameModule.bulidGame(frame_index, detail, function() {
+                                    FrameGameModule.initSelectors(frame_index, function() {
+                                        loadingDisappear(function() {
+                                            FrameGameModule.openAnimation(frame_index);
+                                        });
                                     });
                                 });
                             });
-                        });
-
-                        //server version
+                        }
                     });
                 }
             });
@@ -126,10 +145,28 @@ function registerEvents() {
             frameIntroItemSlideRight(function() {
                 if (finished_count !== $frame_intro_item.length) return;
                 if($evaluationFrame.hasClass('loaded')) return;
-                GameModule.evaluation(function(data) {
-                    $evaluationFrame.addClass('loaded');
-                    EvaluationFrameModule.buildPage(data);
-                });
+
+                if(window.server) {
+                    //server version
+                    $.ajax({
+                        url: window.server_url + '/evaluation',
+                        type: "GET",
+                        data: {
+                            index: frame_index
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            $evaluationFrame.addClass('loaded');
+                            EvaluationFrameModule.buildPage(data);
+                        },
+                    });
+                }else {
+                    // local version
+                    GameModule.evaluation(function(data) {
+                        $evaluationFrame.addClass('loaded');
+                        EvaluationFrameModule.buildPage(data);
+                    });
+                }
             });
         });
     });
@@ -147,15 +184,32 @@ function registerEvents() {
         $game_choice.removeClass('unmade-choice').addClass('made-choice');
         $game_choice.eq(choice).addClass('selected');
 
-        //return answer to server
-        //local version
-        GameModule.check({
-            gameIndex: gameIndex,
-            choice: choice,
-            questionIndex: questionIndex
-        }, function(data) {
-            switchHandler(data);
-        });
+        if(window.server) {
+            //server version
+            $.ajax({
+                url: window.server_url + '/check',
+                type: "POST",
+                data: {
+                    gameIndex: gameIndex,
+                    choice: choice,
+                    questionIndex: questionIndex
+                },
+                success: function(data) {
+                    console.log(data);
+                    switchHandler(data);
+                },
+            });
+        }else {
+            //local version
+            GameModule.check({
+                gameIndex: gameIndex,
+                choice: choice,
+                questionIndex: questionIndex
+            }, function(data) {
+                switchHandler(data);
+            });
+        }
+
     });
 }
 
