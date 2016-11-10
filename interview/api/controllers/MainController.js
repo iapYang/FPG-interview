@@ -121,7 +121,7 @@ module.exports = {
         var gameIndex = req.param('gameIndex');
         var questionIndex = req.param('questionIndex');
         var choice = req.param('choice');
-        console.log(gameIndex,questionIndex,choice);
+        console.log(questionIndex, data[gameIndex].questions.length - 1);
         if (questionIndex !== data[gameIndex].questions.length - 1) {
             var choices = [0, 1, 2];
             var rightAnswer = chooseRandomElement(choices);
