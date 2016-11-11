@@ -104,7 +104,6 @@ function registerEvents() {
                                     index: frame_index
                                 },
                                 success: function(data) {
-                                    console.log(data);
                                     FrameGameModule.bulidGame(frame_index, data, function() {
                                         FrameGameModule.initSelectors(frame_index, function() {
                                             loadingDisappear(function() {
@@ -155,7 +154,6 @@ function registerEvents() {
                             index: frame_index
                         },
                         success: function(data) {
-                            console.log(data);
                             $evaluationFrame.addClass('loaded');
                             EvaluationFrameModule.buildPage(data);
                         },
@@ -195,7 +193,6 @@ function registerEvents() {
                     questionIndex: questionIndex
                 },
                 success: function(data) {
-                    console.log(data);
                     switchHandler(data);
                 },
             });

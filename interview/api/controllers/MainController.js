@@ -118,10 +118,11 @@ module.exports = {
     },
     check: function(req, res) {
         //check if more than one step
-        var gameIndex = req.param('gameIndex');
-        var questionIndex = req.param('questionIndex');
-        var choice = req.param('choice');
-        console.log(questionIndex, data[gameIndex].questions.length - 1);
+        var gameIndex = parseInt(req.param('gameIndex'));
+        var questionIndex = parseInt(req.param('questionIndex'));
+        var choice = parseInt(req.param('choice'));
+        console.log('gameIndex',gameIndex,'questionIndex',questionIndex,'choice',choice,'length',data[gameIndex].questions.length);
+        console.log(questionIndex !== data[gameIndex].questions.length - 1);
         if (questionIndex !== data[gameIndex].questions.length - 1) {
             var choices = [0, 1, 2];
             var rightAnswer = chooseRandomElement(choices);
