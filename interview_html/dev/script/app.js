@@ -16,9 +16,10 @@ import OpenFrameMoudle from './module/openFrameModule';
 import GameModule from './module/gameModule.js';
 
 // window
-// vars
-let server = 'http://localhost:1337';
+window.server = true;
+window.server_url = 'http://localhost:1337';
 
+// vars
 // selectors
 let $scroll_down_btn = $('.scroll-down-button');
 let $frame_list = $('.frame-list');
@@ -45,7 +46,7 @@ function registerEvents() {
     });
 
     $scroll_down_btn.on('click', function() {
-        $frame_list.css('display','block');
+        $frame_list.css('display', 'block');
 
         TweenMax.to('html,body', 1, {
             scrollTop: $frame_list.offset().top,
@@ -53,10 +54,21 @@ function registerEvents() {
                 if ($frame_list.hasClass('intro-added')) return;
                 $frame_list.addClass('intro-added');
 
-                //local version
-                GameModule.getBriefData(function(data) {
-                    FrameMoudle.buildPage(data);
-                });
+                if (window.server) {
+                    //server version
+                    $.ajax({
+                        url: window.server_url + '/briefData',
+                        type: "GET",
+                        success: function(data) {
+                            FrameMoudle.buildPage(data);
+                        },
+                    });
+                } else {
+                    //local version
+                    GameModule.getBriefData(function(data) {
+                        FrameMoudle.buildPage(data);
+                    });
+                }
             }
         });
     });

@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import swig from 'swig';
 import fetchJsonp from 'fetch-jsonp';
+import PictureLoader from '../component/pictureLoader';
 
 import 'fetch-ie8';
 import 'es6-promise';
@@ -43,22 +44,32 @@ function insertIntro(data) {
 }
 
 function fillIntro(content, data) {
+    let preload = [];
+
     data.forEach(function(item, i) {
+        let src = './image/' + item.image;
+        preload.push(src);
+
         let render = swig.render(content, {
             locals: {
                 category: item.category,
                 title: item.title,
                 sub_title: item.sub_title,
-                star: item.star
+                star: item.star,
+                image:src
             },
         });
         $frame_intro_list.append($(render));
         $frame_game_list.append($('<div></div>').addClass('frame-game-item'));
     });
 
-    loadingDisappear(function() {
-        registerEvents();
-        frameIntroItemSlideRight();
+    new PictureLoader(preload).load({
+        end: () => {
+            loadingDisappear(function() {
+                registerEvents();
+                frameIntroItemSlideRight();
+            });
+        }
     });
 }
 
@@ -84,18 +95,36 @@ function registerEvents() {
                 } else {
                     loadingAppear(function() {
 
-                        // local version
-                        GameModule.getDetailDataByIndex(frame_index, function(detail) {
-                            FrameGameModule.bulidGame(frame_index, detail, function() {
-                                FrameGameModule.initSelectors(frame_index, function() {
-                                    loadingDisappear(function() {
-                                        FrameGameModule.openAnimation(frame_index);
+                        if(window.server) {
+                            //server version
+                            $.ajax({
+                                url: window.server_url + '/detailData',
+                                type: "GET",
+                                data: {
+                                    index: frame_index
+                                },
+                                success: function(data) {
+                                    FrameGameModule.bulidGame(frame_index, data, function() {
+                                        FrameGameModule.initSelectors(frame_index, function() {
+                                            loadingDisappear(function() {
+                                                FrameGameModule.openAnimation(frame_index);
+                                            });
+                                        });
+                                    });
+                                },
+                            });
+                        }else {
+                            // local version
+                            GameModule.getDetailDataByIndex(frame_index, function(detail) {
+                                FrameGameModule.bulidGame(frame_index, detail, function() {
+                                    FrameGameModule.initSelectors(frame_index, function() {
+                                        loadingDisappear(function() {
+                                            FrameGameModule.openAnimation(frame_index);
+                                        });
                                     });
                                 });
                             });
-                        });
-
-                        //server version
+                        }
                     });
                 }
             });
@@ -115,9 +144,27 @@ function registerEvents() {
             frameIntroItemSlideRight(function() {
                 if (finished_count !== $frame_intro_item.length) return;
                 if($evaluationFrame.hasClass('loaded')) return;
-                GameModule.evaluation(function(data) {
-                    EvaluationFrameModule.buildPage(data);
-                });
+
+                if(window.server) {
+                    //server version
+                    $.ajax({
+                        url: window.server_url + '/evaluation',
+                        type: "GET",
+                        data: {
+                            index: frame_index
+                        },
+                        success: function(data) {
+                            $evaluationFrame.addClass('loaded');
+                            EvaluationFrameModule.buildPage(data);
+                        },
+                    });
+                }else {
+                    // local version
+                    GameModule.evaluation(function(data) {
+                        $evaluationFrame.addClass('loaded');
+                        EvaluationFrameModule.buildPage(data);
+                    });
+                }
             });
         });
     });
@@ -135,15 +182,31 @@ function registerEvents() {
         $game_choice.removeClass('unmade-choice').addClass('made-choice');
         $game_choice.eq(choice).addClass('selected');
 
-        //return answer to server
-        //local version
-        GameModule.check({
-            gameIndex: gameIndex,
-            choice: choice,
-            questionIndex: questionIndex
-        }, function(data) {
-            switchHandler(data);
-        });
+        if(window.server) {
+            //server version
+            $.ajax({
+                url: window.server_url + '/check',
+                type: "POST",
+                data: {
+                    gameIndex: gameIndex,
+                    choice: choice,
+                    questionIndex: questionIndex
+                },
+                success: function(data) {
+                    switchHandler(data);
+                },
+            });
+        }else {
+            //local version
+            GameModule.check({
+                gameIndex: gameIndex,
+                choice: choice,
+                questionIndex: questionIndex
+            }, function(data) {
+                switchHandler(data);
+            });
+        }
+
     });
 }
 

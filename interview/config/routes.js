@@ -35,8 +35,10 @@ module.exports.routes = {
     '/': {
         view: 'homepage'
     },
-    'GET /getFrame1': 'MainController.frame1',
-    'GET /getDoorsNumber': 'MainController.getDoorsNumber'
+    'GET /briefData': 'MainController.getBriefData',
+    'GET /detailData': 'MainController.getDetailDataByIndex',
+    'GET /evaluation': 'MainController.evaluation',
+    'POST /check': 'MainController.check',
 
     /***************************************************************************
      *                                                                          *
