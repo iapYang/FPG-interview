@@ -1,0 +1,15 @@
+{
+  "name": "fpg-interview-dev",
+  "version": "1.0.0",
+  "description": "built for FPG interview test",
+  "main": "index.js",
+  "scripts": {
+    "gh": "node conf/deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gh-pages": "^0.12.0"
+  },
+  "dependencies": {}
+}
